@@ -50,7 +50,7 @@ Add zemscripten's "root" module to your wasm compile target., then create an `em
             .preload_paths = &.{},
             .shell_file_path = null, // set this to override the default html shell
             .js_library_path = null,
-            .out_file_name = null, // emcc output arg will default to {wasm.name}.html if unset
+            .out_file_name = "MyGame.html", // or "MyGame.js"
             .install_dir = .{ .custom = "web" },
         },
     );
