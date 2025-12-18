@@ -11,7 +11,8 @@ Add `zemscripten` and (optionally) `emsdk` to your build.zig.zon dependencies
 
 Emsdk must be activated before it can be used. You can use `activateEmsdkStep` to create a build step for that:
 ```zig
-    const activate_emsdk_step = @import("zemscripten").activateEmsdkStep(b);
+    const emsdk_dep = b.dependency("emsdk", .{});
+    const activate_emsdk_step = @import("zemscripten").activateEmsdkStep(b, emsdk_dep);
 ```
 
 Add zemscripten's "root" module to your wasm compile target., then create an `emcc` build step. We use zemscripten's default flags and settings which can be overridden for your project specific requirements. Refer to the [emcc documentation](https://emscripten.org/docs/tools_reference/emcc.html). Example build.zig code:
@@ -39,6 +40,7 @@ Add zemscripten's "root" module to your wasm compile target., then create an `em
 
     const emcc_step = @import("zemscripten").emccStep(
         b,
+        emsdk_dep,
         &.{ }, // src file paths 
         &.{ wasm }, // src compile steps
         .{
@@ -83,6 +85,7 @@ You can also define a run step that invokes `emrun`. This will serve the html lo
     const emrun_args = .{};
     const emrun_step = @import("zemscripten").emrunStep(
         b,
+        emsdk_dep,
         b.getInstallPath(.{ .custom = "web" }, html_filename),
         &emrun_args,
     );
